@@ -16,11 +16,11 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
       manifest: {
-        name: 'Zela+ Recife',
-        short_name: 'Zela+',
-        description: 'App de denúncia de lixo urbano em Recife',
+        name: 'Zelar',
+        short_name: 'Zelar',
+        description: 'App de denúncia de lixo urbano',
         theme_color: '#2e7d32',
         background_color: '#ffffff',
         display: 'standalone',
