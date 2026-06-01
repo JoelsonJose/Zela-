@@ -83,23 +83,17 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
     setSubmitting(true);
     
     try {
-      const submitData = new FormData();
-      submitData.append('foto', image, 'denuncia.jpg');
-      submitData.append('categoria', formData.categoria);
-      submitData.append('gravidade', formData.gravidade);
-      submitData.append('descricao', formData.descricao);
-      // Fallbacks just in case the backend uses old names
-      submitData.append('tipo_lixo', formData.categoria);
-      submitData.append('intensidade', formData.gravidade);
-      submitData.append('risco', formData.descricao);
-      if (location) {
-        submitData.append('lat', location.lat);
-        submitData.append('lng', location.lng);
-      }
+      const payload = {
+        categoria_ia: formData.categoria,
+        gravidade_ia: formData.gravidade,
+        descricao_ia: formData.descricao,
+        latitude: location ? location.lat.toString() : null,
+        longitude: location ? location.lng.toString() : null
+      };
 
       const apiUrl = import.meta.env.VITE_API_URL || '';
-      await axios.post(`${apiUrl}/api/denuncias`, submitData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      await axios.post(`${apiUrl}/api/denuncias`, payload, {
+        headers: { 'Content-Type': 'application/json' }
       });
       
       onSuccess();
@@ -159,43 +153,37 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Lixo</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
             <input 
               type="text" 
               name="categoria"
               value={formData.categoria}
               onChange={handleInputChange}
-              placeholder="Ex: Entulho, Plástico, Orgânico"
-              className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none"
+              className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none bg-gray-50"
               required
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Grau de Risco</label>
-            <select 
+            <input 
+              type="text"
               name="gravidade"
               value={formData.gravidade}
               onChange={handleInputChange}
-              className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none bg-white"
+              className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none bg-gray-50"
               required
-            >
-              <option value="" disabled>Selecione o grau de risco</option>
-              <option value="Baixa">Baixo</option>
-              <option value="Média">Médio</option>
-              <option value="Alta">Alto</option>
-            </select>
+            />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Descrição Detalhada</label>
             <textarea 
               name="descricao"
               value={formData.descricao}
               onChange={handleInputChange}
-              placeholder="Descreva os itens encontrados na foto..."
-              rows={3}
-              className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none resize-none"
+              rows={4}
+              className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none resize-none bg-gray-50"
               required
             />
           </div>
