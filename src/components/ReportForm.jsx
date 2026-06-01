@@ -53,7 +53,7 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
       if (!image) return;
       try {
         const data = new FormData();
-        data.append('file', image, 'denuncia.jpg');
+        data.append('foto', image, 'denuncia.jpg');
         
         const apiUrl = import.meta.env.VITE_API_URL || '';
         const response = await axios.post(`${apiUrl}/api/denuncias/analise`, data, {
@@ -84,7 +84,7 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
     
     try {
       const submitData = new FormData();
-      submitData.append('file', image, 'denuncia.jpg');
+      submitData.append('foto', image, 'denuncia.jpg');
       submitData.append('tipo_lixo', formData.tipo_lixo);
       submitData.append('intensidade', formData.intensidade);
       submitData.append('risco', formData.risco);
