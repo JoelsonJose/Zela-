@@ -55,7 +55,8 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
         const data = new FormData();
         data.append('file', image, 'denuncia.jpg');
         
-        const response = await axios.post('http://localhost:8081/api/denuncias/analise', data, {
+        const apiUrl = import.meta.env.VITE_API_URL || '';
+        const response = await axios.post(`${apiUrl}/api/denuncias/analise`, data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         
@@ -92,7 +93,8 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
         submitData.append('lng', location.lng);
       }
 
-      await axios.post('http://localhost:8081/api/denuncias', submitData, {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      await axios.post(`${apiUrl}/api/denuncias`, submitData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       

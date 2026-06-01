@@ -21,7 +21,8 @@ export default function MapView() {
   useEffect(() => {
     const fetchDenuncias = async () => {
       try {
-        const response = await axios.get('http://localhost:8081/api/denuncias');
+        const apiUrl = import.meta.env.VITE_API_URL || '';
+        const response = await axios.get(`${apiUrl}/api/denuncias`);
         setDenuncias(response.data);
       } catch (error) {
         console.error("Error fetching reports:", error);
