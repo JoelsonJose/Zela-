@@ -60,11 +60,28 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         
-        if (response.data) {
+        console.log("JSON recebido:", response.data);
+        let parsedData = response.data;
+
+        // Se o backend retornar o payload bruto do Gemini:
+        if (parsedData && parsedData.candidates && parsedData.candidates.length > 0) {
+          const rawText = parsedData.candidates[0].content.parts[0].text;
+          console.log("Texto raw do Gemini:", rawText);
+          try {
+            // Extrai o JSON de dentro dos blocos markdown ```json ... ```
+            const jsonStr = rawText.replace(/```json\n?|\n?```/g, '').trim();
+            parsedData = JSON.parse(jsonStr);
+            console.log("JSON extraído do Gemini:", parsedData);
+          } catch (e) {
+            console.error("Erro ao fazer parse do JSON do Gemini:", e);
+          }
+        }
+
+        if (parsedData) {
           setFormData({
-            categoria: response.data.categoria || response.data.categoria_ia || '',
-            gravidade: response.data.gravidade || response.data.gravidade_ia || '',
-            descricao: response.data.descricao || response.data.descricao_ia || ''
+            categoria: parsedData.categoria || parsedData.categoria_ia || parsedData.tipo_lixo || '',
+            gravidade: parsedData.gravidade || parsedData.gravidade_ia || parsedData.intensidade || '',
+            descricao: parsedData.descricao || parsedData.descricao_ia || parsedData.risco || ''
           });
         }
       } catch (err) {
