@@ -194,7 +194,7 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Descrição Detalhada</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
             <textarea 
               name="descricao"
               value={formData.descricao}
