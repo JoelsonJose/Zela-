@@ -10,9 +10,9 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
   const [error, setError] = useState(null);
   
   const [formData, setFormData] = useState({
-    tipo_lixo: '',
-    intensidade: '',
-    risco: ''
+    categoria: '',
+    gravidade: '',
+    descricao: ''
   });
 
   // Setup preview URL and get location
@@ -62,9 +62,9 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
         
         if (response.data) {
           setFormData({
-            tipo_lixo: response.data.tipo_lixo || '',
-            intensidade: response.data.intensidade || '',
-            risco: response.data.risco || ''
+            categoria: response.data.categoria || response.data.categoria_ia || '',
+            gravidade: response.data.gravidade || response.data.gravidade_ia || '',
+            descricao: response.data.descricao || response.data.descricao_ia || ''
           });
         }
       } catch (err) {
@@ -85,9 +85,13 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
     try {
       const submitData = new FormData();
       submitData.append('foto', image, 'denuncia.jpg');
-      submitData.append('tipo_lixo', formData.tipo_lixo);
-      submitData.append('intensidade', formData.intensidade);
-      submitData.append('risco', formData.risco);
+      submitData.append('categoria', formData.categoria);
+      submitData.append('gravidade', formData.gravidade);
+      submitData.append('descricao', formData.descricao);
+      // Fallbacks just in case the backend uses old names
+      submitData.append('tipo_lixo', formData.categoria);
+      submitData.append('intensidade', formData.gravidade);
+      submitData.append('risco', formData.descricao);
       if (location) {
         submitData.append('lat', location.lat);
         submitData.append('lng', location.lng);
@@ -147,8 +151,8 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
         {/* Location Indicator */}
         <div className="flex items-center text-sm text-gray-600 mb-6 bg-zela-light p-3 rounded-xl border border-green-100">
           <MapPin size={18} className="text-zela-green mr-2 shrink-0" />
-          <span className="truncate">
-            {location ? `Lat: ${location.lat.toFixed(4)}, Lng: ${location.lng.toFixed(4)}` : 'Obtendo localização...'}
+          <span className="truncate font-medium">
+            {location ? 'Localização: Capturada' : 'Obtendo localização...'}
           </span>
         </div>
 
@@ -158,8 +162,8 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
             <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Lixo</label>
             <input 
               type="text" 
-              name="tipo_lixo"
-              value={formData.tipo_lixo}
+              name="categoria"
+              value={formData.categoria}
               onChange={handleInputChange}
               placeholder="Ex: Entulho, Plástico, Orgânico"
               className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none"
@@ -168,35 +172,32 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Intensidade (Volume)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Grau de Risco</label>
             <select 
-              name="intensidade"
-              value={formData.intensidade}
+              name="gravidade"
+              value={formData.gravidade}
               onChange={handleInputChange}
               className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none bg-white"
               required
             >
-              <option value="" disabled>Selecione o volume</option>
-              <option value="Baixa">Baixo volume</option>
-              <option value="Média">Médio volume</option>
-              <option value="Alta">Alto volume</option>
+              <option value="" disabled>Selecione o grau de risco</option>
+              <option value="Baixa">Baixo</option>
+              <option value="Média">Médio</option>
+              <option value="Alta">Alto</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Grau de Risco</label>
-            <select 
-              name="risco"
-              value={formData.risco}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+            <textarea 
+              name="descricao"
+              value={formData.descricao}
               onChange={handleInputChange}
-              className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none bg-white"
+              placeholder="Descreva os itens encontrados na foto..."
+              rows={3}
+              className="w-full p-3 rounded-xl border border-gray-300 focus:border-zela-green focus:ring-2 focus:ring-zela-light transition outline-none resize-none"
               required
-            >
-              <option value="" disabled>Selecione o risco</option>
-              <option value="Baixo">Baixo</option>
-              <option value="Medio">Médio</option>
-              <option value="Alto">Alto</option>
-            </select>
+            />
           </div>
 
           <button 
