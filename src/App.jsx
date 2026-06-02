@@ -62,7 +62,7 @@ function App() {
       </div>
 
       {/* Floating Camera Button - Only show on map screen */}
-      {activeScreen === 'map' && (
+      {!showSplash && activeScreen === 'map' && (
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
           <button 
             onClick={() => setActiveScreen('camera')}
