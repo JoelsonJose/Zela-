@@ -64,14 +64,14 @@ export default function MapView() {
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
-        {denuncias.map((denuncia) => (
+        {denuncias.filter(d => d.lat != null && d.lng != null).map((denuncia) => (
           <CircleMarker
             key={denuncia.id}
             center={[denuncia.lat, denuncia.lng]}
             radius={12}
             pathOptions={{
-              color: getMarkerColor(denuncia.risco),
-              fillColor: getMarkerColor(denuncia.risco),
+              color: getMarkerColor(denuncia.intensidade),
+              fillColor: getMarkerColor(denuncia.intensidade),
               fillOpacity: 0.6,
               weight: 2
             }}
