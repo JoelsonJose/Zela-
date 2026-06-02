@@ -22,7 +22,8 @@ export default function MapView() {
     const fetchDenuncias = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/denuncias`);
+        const timestamp = new Date().getTime();
+        const response = await axios.get(`/api/denuncias?t=${timestamp}`);
         
         if (response.data && Array.isArray(response.data)) {
           setDenuncias(response.data);
