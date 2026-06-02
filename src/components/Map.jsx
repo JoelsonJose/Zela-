@@ -26,6 +26,9 @@ export default function MapView() {
         const response = await axios.get(`/api/denuncias?t=${timestamp}`);
         
         if (response.data && Array.isArray(response.data)) {
+          console.log("🔥 [DEBUG] Recebido da API:", response.data);
+          const validas = response.data.filter(d => d.lat != null && d.lng != null);
+          console.log("🔥 [DEBUG] Denuncias validas com Lat/Lng:", validas);
           setDenuncias(response.data);
         }
       } catch (error) {
@@ -44,12 +47,11 @@ export default function MapView() {
   }, []);
 
   const getMarkerColor = (risco) => {
-    switch (risco?.toLowerCase()) {
-      case 'alto': return '#ef4444'; // Red
-      case 'medio': return '#eab308'; // Yellow
-      case 'baixo': return '#22c55e'; // Green
-      default: return '#3b82f6'; // Blue fallback
-    }
+    const r = risco?.toLowerCase() || '';
+    if (r.includes('alt')) return '#ef4444'; // Red (alto, alta)
+    if (r.includes('méd') || r.includes('med')) return '#eab308'; // Yellow (medio, média)
+    if (r.includes('baix')) return '#22c55e'; // Green (baixo, baixa)
+    return '#3b82f6'; // Blue fallback
   };
 
   return (
