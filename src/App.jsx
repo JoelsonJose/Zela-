@@ -66,7 +66,7 @@ function App() {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
           <button 
             onClick={() => setActiveScreen('camera')}
-            className="bg-zela-primary text-white p-4 rounded-full shadow-[0_4px_14px_rgba(34,197,94,0.4)] hover:bg-green-700 transition-all active:scale-95 flex items-center justify-center"
+            className="bg-zela-green text-white p-4 rounded-full shadow-[0_4px_14px_rgba(34,197,94,0.4)] hover:bg-zela-dark hover:scale-110 transition-all duration-300 active:scale-95 flex items-center justify-center"
           >
             <Camera size={32} />
           </button>
