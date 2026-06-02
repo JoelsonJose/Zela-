@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import MapView from './components/Map'
 import CameraView from './components/Camera'
 import ReportForm from './components/ReportForm'
-import BottomNav from './components/BottomNav'
+import { Camera } from 'lucide-react'
 import logoSrc from './assets/logo.png'
 
 function App() {
@@ -44,12 +44,12 @@ function App() {
       {/* Top Header Logo */}
       {!showSplash && activeScreen === 'map' && (
         <div className="absolute top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-sm border-b border-gray-100 p-3 flex justify-center shadow-sm">
-          <img src={logoSrc} alt="Zelar Logo" className="h-10 w-auto object-contain" />
+          <img src={logoSrc} alt="Zelar Logo" className="h-10 w-auto object-contain scale-150 origin-center" />
         </div>
       )}
 
       {/* Main Content Area */}
-      <div className="h-full w-full pb-16">
+      <div className="h-full w-full pb-0">
         {activeScreen === 'map' && <MapView />}
         {activeScreen === 'camera' && <CameraView onCapture={handleCapture} onCancel={() => setActiveScreen('map')} />}
         {activeScreen === 'form' && (
@@ -61,12 +61,16 @@ function App() {
         )}
       </div>
 
-      {/* Bottom Navigation - Only show on map screen */}
+      {/* Floating Camera Button - Only show on map screen */}
       {activeScreen === 'map' && (
-        <BottomNav 
-          onCameraClick={() => setActiveScreen('camera')}
-          onMapClick={() => setActiveScreen('map')}
-        />
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
+          <button 
+            onClick={() => setActiveScreen('camera')}
+            className="bg-zela-primary text-white p-4 rounded-full shadow-[0_4px_14px_rgba(34,197,94,0.4)] hover:bg-green-700 transition-all active:scale-95 flex items-center justify-center"
+          >
+            <Camera size={32} />
+          </button>
+        </div>
       )}
     </div>
   )
