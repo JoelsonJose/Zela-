@@ -55,8 +55,7 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
         const data = new FormData();
         data.append('foto', image, 'denuncia.jpg');
         
-        const apiUrl = import.meta.env.VITE_API_URL || '';
-        const response = await axios.post(`${apiUrl}/api/denuncias/analise`, data, {
+        const response = await axios.post(`/api/denuncias/analise`, data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         
@@ -108,8 +107,7 @@ export default function ReportForm({ image, onCancel, onSuccess }) {
         longitude: location ? location.lng.toString() : null
       };
 
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      await axios.post(`${apiUrl}/api/denuncias`, payload, {
+      await axios.post(`/api/denuncias`, payload, {
         headers: { 'Content-Type': 'application/json' }
       });
       

@@ -21,9 +21,12 @@ export default function MapView() {
   useEffect(() => {
     const fetchDenuncias = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || '';
-        const response = await axios.get(`${apiUrl}/api/denuncias`);
-        setDenuncias(response.data);
+        setLoading(true);
+        const response = await axios.get(`/api/denuncias`);
+        
+        if (response.data && Array.isArray(response.data)) {
+          setDenuncias(response.data);
+        }
       } catch (error) {
         console.error("Error fetching reports:", error);
         // Mock data fallback if backend is down for testing UI
