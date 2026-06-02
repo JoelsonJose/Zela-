@@ -23,7 +23,11 @@ export default function MapView() {
       try {
         setLoading(true);
         const timestamp = new Date().getTime();
-        const response = await axios.get(`/api/denuncias?t=${timestamp}`);
+        const response = await axios.get(`/api/denuncias?t=${timestamp}`, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true'
+          }
+        });
         
         if (response.data && Array.isArray(response.data)) {
           console.log("🔥 [DEBUG] Recebido da API:", response.data);
